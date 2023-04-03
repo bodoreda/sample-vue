@@ -1,6 +1,6 @@
 <template>
   <h2>NicePay 결제 API</h2>
-  <form name="payForm">
+  <form name="payForm" method="post" action="localhost:8080/NicePayResult">
     <table>
       <tr>
         <th><span>결제 수단</span></th>
@@ -12,7 +12,7 @@
       </tr>
       <tr>
         <th><span>결제 상품금액</span></th>
-        <td><input type="text" name="Amt" ref="Amt" v-model="requestParams.amt"></td>
+        <td><input type="text" name="Amt" v-model="requestParams.amt"></td>
       </tr>				
       <tr>
         <th><span>상점 아이디</span></th>
@@ -74,7 +74,7 @@ export default {
     data() {
       return {
         requestParams: {
-          payMethod: 'BANK',
+          payMethod: '',
           goodsName: '',
           amt: '',
           mid: '',
@@ -93,7 +93,8 @@ export default {
         staticParams: {
           ediDate: '',
           signData: '',
-        }
+        },
+        userPlatform: '',
       }
     },
     created() {
@@ -120,14 +121,39 @@ export default {
     methods: {
       //결제창 최초 요청시 실행됩니다.
       nicepayStart() {
+        console.log("nicepayStart 메서드 호출")
         // if(checkPlatform(window.navigator.userAgent) == "mobile"){//모바일 결제창 진입
+        //   console.log("모바일 결제창 진입")
         //   document.payForm.action = "https://web.nicepay.co.kr/v3/v3Payment.jsp";
         //   document.payForm.acceptCharset="euc-kr";
         //   document.payForm.submit();
         // }else{//PC 결제창 진입
+        //   console.log("PC 결제창 진입")
         //   goPay(document.payForm);
         // }
-        goPay(document.payForm)
+        goPay(document.payForm);
+      },
+
+      //[PC 결제창 전용]결제 최종 요청시 실행됩니다. <<'nicepaySubmit()' 이름 수정 불가능>>
+      nicepaySubmit(){
+        document.payForm.submit();
+        // router.push({
+        //   name: 'NicePayResult',
+        //   // query: {
+        //   //   AuthResultCode: '',
+        //   //   AuthResultMsg: '',
+        //   //   AuthToken: '',
+        //   //   PayMethod: this.requestParams.payMethod,
+        //   //   MID: this.requestParams.mid,
+        //   //   Moid: this.requestParams.moid,
+        //   //   Signature: this.staticParams.signData,
+        //   //   Amt: this.requestParams.amt,
+        //   //   ReqReserved: this.optionParams.reqReserved,
+        //   //   TxTid: '',
+        //   //   NextAppURL: '',
+        //   //   NetCancelURL: '',
+        //   // },
+        // })
       },
 
       //[PC 결제창 전용]결제창 종료 함수 <<'nicepayClose()' 이름 수정 불가능>>
@@ -144,7 +170,7 @@ export default {
         ua = ua.toLowerCase();
         var platform = {};
         var matched = {};
-        var userPlatform = "pc";
+        this.userPlatform = "pc";
         var platform_match = /(ipad)/.exec(ua) || /(ipod)/.exec(ua) 
           || /(windows phone)/.exec(ua) || /(iphone)/.exec(ua) 
           || /(kindle)/.exec(ua) || /(silk)/.exec(ua) || /(android)/.exec(ua) 
@@ -164,14 +190,12 @@ export default {
             || platform.ipod || platform.kindle 
             || platform.playbook || platform.silk
             || platform["windows phone"]) {
-          userPlatform = "mobile";
+          this.userPlatform = "mobile";
         }
         
         if(platform.cros || platform.mac || platform.linux || platform.win) {
-          userPlatform = "pc";
+          this.userPlatform = "pc";
         }
-        
-        return userPlatform;
       },
     },
 

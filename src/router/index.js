@@ -5,6 +5,11 @@ const routes = [
         path: '/NicePay',
         name: 'NicePay',
         component: () => import('../views/NicePay.vue'),
+    },
+    {
+        path: '/NicePayResult',
+        name: 'NicePayResult',
+        component: () => import('../views/NicePayResult.vue'),
     }
 ];
 
