@@ -65,6 +65,10 @@
 <script>
 /* eslint-disable */
 
+window.nicepaySubmit = function() {
+  console.log("arrived")
+}
+
 export default {
     inject: ['callApi'],
     name: 'NicePay',
@@ -136,24 +140,24 @@ export default {
 
       //[PC 결제창 전용]결제 최종 요청시 실행됩니다. <<'nicepaySubmit()' 이름 수정 불가능>>
       nicepaySubmit(){
-        document.payForm.submit();
-        // router.push({
-        //   name: 'NicePayResult',
-        //   // query: {
-        //   //   AuthResultCode: '',
-        //   //   AuthResultMsg: '',
-        //   //   AuthToken: '',
-        //   //   PayMethod: this.requestParams.payMethod,
-        //   //   MID: this.requestParams.mid,
-        //   //   Moid: this.requestParams.moid,
-        //   //   Signature: this.staticParams.signData,
-        //   //   Amt: this.requestParams.amt,
-        //   //   ReqReserved: this.optionParams.reqReserved,
-        //   //   TxTid: '',
-        //   //   NextAppURL: '',
-        //   //   NetCancelURL: '',
-        //   // },
-        // })
+        // document.payForm.submit();
+        this.$router.push({
+          name: 'NicePayResult',
+          // query: {
+          //   AuthResultCode: '',
+          //   AuthResultMsg: '',
+          //   AuthToken: '',
+          //   PayMethod: this.requestParams.payMethod,
+          //   MID: this.requestParams.mid,
+          //   Moid: this.requestParams.moid,
+          //   Signature: this.staticParams.signData,
+          //   Amt: this.requestParams.amt,
+          //   ReqReserved: this.optionParams.reqReserved,
+          //   TxTid: '',
+          //   NextAppURL: '',
+          //   NetCancelURL: '',
+          // },
+        })
       },
 
       //[PC 결제창 전용]결제창 종료 함수 <<'nicepayClose()' 이름 수정 불가능>>
